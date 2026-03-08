@@ -1,3 +1,6 @@
+[![npm downloads](https://img.shields.io/npm/dw/watch-eslint)](https://www.npmjs.com/package/watch-eslint)
+[![npm version](https://img.shields.io/npm/v/watch-eslint)](https://www.npmjs.com/package/watch-eslint)
+
 # watch-eslint
 
 `watch-eslint` is a tool that automatically runs ESLint whenever it detects changes in your files. It works with any version of ESLint, as long as it's installed in your repository, allowing you to upgrade or downgrade ESLint without compatibility issues.

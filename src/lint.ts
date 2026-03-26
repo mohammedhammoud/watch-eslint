@@ -1,5 +1,6 @@
 import { ChildProcess, spawn } from 'child_process';
-import path from 'path';
+
+import { resolveEslintBin } from './eslint-bin';
 
 type LintOptions = {
   args: (number | string)[];
@@ -11,11 +12,9 @@ export const lint = ({ args: argv, files = [] }: LintOptions) => {
     arg.toString()
   );
 
-  const eslint: ChildProcess = spawn(
-    path.join(process.cwd(), 'node_modules', '.bin', 'eslint'),
-    stringArgs,
-    { stdio: 'inherit' }
-  );
+  const eslint: ChildProcess = spawn(resolveEslintBin(), stringArgs, {
+    stdio: 'inherit',
+  });
 
   eslint.on('close', (code) => {
     if (code === 2) {

@@ -1,16 +1,13 @@
 import { spawn } from 'child_process';
-import path from 'path';
 import { hideBin } from 'yargs/helpers';
 import yargs from 'yargs/yargs';
 
 import { version } from '../package.json';
+import { resolveEslintBin } from './eslint-bin';
 
 const getEslintHelpOutput = (): Promise<string> => {
   return new Promise((resolve, reject) => {
-    const eslintHelp = spawn(
-      path.join(process.cwd(), 'node_modules', '.bin', 'eslint'),
-      ['--help']
-    );
+    const eslintHelp = spawn(resolveEslintBin(), ['--help']);
 
     let output = '';
 

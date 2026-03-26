@@ -1,16 +1,23 @@
 import * as child_process from 'child_process';
+import fs from 'fs';
 
 import { lint } from './lint';
 
 jest.mock('child_process');
+jest.mock('fs');
 
 describe('lint', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
 
-  it('should use process.cwd() to find the eslint binary', () => {
-    jest.spyOn(process, 'cwd').mockReturnValue('/path');
+  it('should use the nearest eslint binary in the directory tree', () => {
+    jest.spyOn(process, 'cwd').mockReturnValue('/path/to/workspace');
+    jest
+      .mocked(fs.existsSync)
+      .mockImplementation(
+        (filePath) => filePath === '/path/node_modules/.bin/eslint'
+      );
     const spawnMock = jest
       .spyOn(child_process, 'spawn')
       .mockImplementation(() => {
@@ -22,7 +29,27 @@ describe('lint', () => {
     lint({ args: [], files: [] });
 
     expect(spawnMock).toHaveBeenCalledWith(
-      expect.stringMatching(/\/path\/node_modules\/\.bin\/eslint/),
+      '/path/node_modules/.bin/eslint',
+      expect.any(Array),
+      expect.any(Object)
+    );
+  });
+
+  it('should fall back to eslint on PATH when no local binary is found', () => {
+    jest.spyOn(process, 'cwd').mockReturnValue('/path/to/workspace');
+    jest.mocked(fs.existsSync).mockReturnValue(false);
+    const spawnMock = jest
+      .spyOn(child_process, 'spawn')
+      .mockImplementation(() => {
+        return {
+          on: jest.fn(),
+        } as unknown as child_process.ChildProcess;
+      });
+
+    lint({ args: [], files: [] });
+
+    expect(spawnMock).toHaveBeenCalledWith(
+      'eslint',
       expect.any(Array),
       expect.any(Object)
     );

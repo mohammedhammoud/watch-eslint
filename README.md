@@ -5,6 +5,8 @@
 
 `watch-eslint` is a tool that automatically runs ESLint whenever it detects changes in your files. It works with any version of ESLint, as long as it's installed in your repository, allowing you to upgrade or downgrade ESLint without compatibility issues.
 
+It also works in monorepos and Yarn/NPM workspaces by resolving the nearest available `eslint` binary up the directory tree instead of assuming a local `node_modules` in the current package.
+
 ## Getting Started
 
 ### Installation

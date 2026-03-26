@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/mohammedhammoud/watch-eslint/compare/v1.1.0...v1.1.1) (2026-03-26)
+
+
+### Bug Fixes
+
+* resolve nearest eslint binary in workspaces ([df1e994](https://github.com/mohammedhammoud/watch-eslint/commit/df1e994b3b6d1b7f4d8b4cd80a57351c09aee0d1))
+
 # [1.1.0](https://github.com/mohammedhammoud/watch-eslint/compare/v1.0.0...v1.1.0) (2024-08-20)
 
 

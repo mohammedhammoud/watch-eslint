@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/mohammedhammoud/watch-eslint/compare/v1.1.1...v1.1.2) (2026-04-29)
+
+
+### Bug Fixes
+
+* resolve eslint through node ([47eeedf](https://github.com/mohammedhammoud/watch-eslint/commit/47eeedfe4fb601a66efbfa99a681666bab30bac6))
+
 ## [1.1.1](https://github.com/mohammedhammoud/watch-eslint/compare/v1.1.0...v1.1.1) (2026-03-26)
 
 

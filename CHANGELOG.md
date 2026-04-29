@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/mohammedhammoud/watch-eslint/compare/v1.1.2...v1.1.3) (2026-04-29)
+
+
+### Bug Fixes
+
+* update npm token ([755b789](https://github.com/mohammedhammoud/watch-eslint/commit/755b789612b5ea8df43691276b4c174e6442a466))
+
 ## [1.1.2](https://github.com/mohammedhammoud/watch-eslint/compare/v1.1.1...v1.1.2) (2026-04-29)
 
 

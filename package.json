@@ -1,7 +1,7 @@
 {
   "name": "watch-eslint",
   "description": "Run eslint with watch mode",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "repository": {
     "type": "git",
     "url": "git@github.com:mohammedhammoud/watch-eslint.git"

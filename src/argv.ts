@@ -3,11 +3,12 @@ import { hideBin } from 'yargs/helpers';
 import yargs from 'yargs/yargs';
 
 import { version } from '../package.json';
-import { resolveEslintBin } from './eslint-bin';
+import { resolveEslintCommand } from './eslint-command';
 
 const getEslintHelpOutput = (): Promise<string> => {
   return new Promise((resolve, reject) => {
-    const eslintHelp = spawn(resolveEslintBin(), ['--help']);
+    const eslintCommand = resolveEslintCommand(['--help']);
+    const eslintHelp = spawn(eslintCommand.command, eslintCommand.args);
 
     let output = '';
 

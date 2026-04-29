@@ -1,8 +1,11 @@
 jest.mock('../package.json', () => ({
   version: '1.0.0-test',
 }));
-jest.mock('./eslint-bin', () => ({
-  resolveEslintBin: jest.fn(() => '/repo/node_modules/.bin/eslint'),
+jest.mock('./eslint-command', () => ({
+  resolveEslintCommand: jest.fn(() => ({
+    args: ['/repo/node_modules/eslint/bin/eslint.js', '--help'],
+    command: process.execPath,
+  })),
 }));
 
 const getArgv = async () => {
@@ -61,8 +64,8 @@ describe('argv', () => {
     exitSpy.mockRestore();
   });
 
-  it('should use the resolved eslint binary when printing help', async () => {
-    const { resolveEslintBin } = await import('./eslint-bin');
+  it('should use the resolved eslint command when printing help', async () => {
+    const { resolveEslintCommand } = await import('./eslint-command');
 
     jest.doMock('child_process', () => ({
       spawn: jest.fn(() => {
@@ -88,7 +91,7 @@ describe('argv', () => {
 
     await getArgv();
 
-    expect(resolveEslintBin).toHaveBeenCalled();
+    expect(resolveEslintCommand).toHaveBeenCalledWith(['--help']);
     exitSpy.mockRestore();
   });
 

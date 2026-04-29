@@ -1,23 +1,39 @@
 import * as child_process from 'child_process';
 import fs from 'fs';
+import os from 'os';
+import path from 'path';
 
 import { lint } from './lint';
 
 jest.mock('child_process');
-jest.mock('fs');
 
 describe('lint', () => {
+  let tmpDir: string;
+
+  beforeEach(() => {
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'lint-'));
+  });
+
   afterEach(() => {
+    fs.rmSync(tmpDir, { force: true, recursive: true });
     jest.restoreAllMocks();
   });
 
-  it('should use the nearest eslint binary in the directory tree', () => {
-    jest.spyOn(process, 'cwd').mockReturnValue('/path/to/workspace');
-    jest
-      .mocked(fs.existsSync)
-      .mockImplementation(
-        (filePath) => filePath === '/path/node_modules/.bin/eslint'
-      );
+  it('should use eslint resolved from the directory tree', () => {
+    const eslintBin = path.join(
+      tmpDir,
+      'node_modules',
+      'eslint',
+      'bin',
+      'eslint.js'
+    );
+    const workspacePackage = path.join(tmpDir, 'packages', 'app');
+
+    fs.mkdirSync(path.dirname(eslintBin), { recursive: true });
+    fs.mkdirSync(workspacePackage, { recursive: true });
+    fs.writeFileSync(eslintBin, '');
+
+    jest.spyOn(process, 'cwd').mockReturnValue(workspacePackage);
     const spawnMock = jest
       .spyOn(child_process, 'spawn')
       .mockImplementation(() => {
@@ -29,15 +45,14 @@ describe('lint', () => {
     lint({ args: [], files: [] });
 
     expect(spawnMock).toHaveBeenCalledWith(
-      '/path/node_modules/.bin/eslint',
-      expect.any(Array),
+      process.execPath,
+      [fs.realpathSync(eslintBin), '--exit-on-fatal-error'],
       expect.any(Object)
     );
   });
 
   it('should fall back to eslint on PATH when no local binary is found', () => {
-    jest.spyOn(process, 'cwd').mockReturnValue('/path/to/workspace');
-    jest.mocked(fs.existsSync).mockReturnValue(false);
+    jest.spyOn(process, 'cwd').mockReturnValue(tmpDir);
     const spawnMock = jest
       .spyOn(child_process, 'spawn')
       .mockImplementation(() => {
